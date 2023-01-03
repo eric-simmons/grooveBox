@@ -9,13 +9,20 @@ playBtn.addEventListener('click', () => {
     if (Tone.context.state !== 'running') Tone.context.resume();
 });
 
-let numSteps = 17
+
+
+Tone.Transport.bpm.value = 220;
+let numSteps = 16
 let steps = []
 let index = 0
 
 
+let bools = []
+console.log(bools)
 
-for (let i = 0; i < numSteps - 1; i++) {
+
+
+for (let i = 0; i < numSteps; i++) {
     let step = document.createElement('button')
     step.setAttribute('id', `step${i}`)
     step.classList.add("step")
@@ -35,21 +42,20 @@ grid.addEventListener('click', function (event) {
 
 //draw loop  t
 const highlightStep = () => {
+    const time = Tone.Time("4n").toSeconds() * 1000 / 2
 
-    const time = Tone.Time("4n").toSeconds()*1000/2
-    
     index = index % numSteps
     if (index > 15) { index = 0 }
     let currentStep = steps[index]
-
-    
+    if (currentStep.matches('.activeStep')) {
+        console.log("hey")
+    }
     currentStep.classList.add("playhead")
     setTimeout(() => {
         currentStep.classList.remove("playhead")
     }, time)
-     
     index++
-
+    return currentStep
 }
 
 
@@ -57,14 +63,7 @@ const highlightStep = () => {
 
 
 Tone.Transport.stop()
-Tone.Transport.bpm.value = 220;
 
-// const synth = new Tone.Synth({
-//     oscillator: {
-//         type: "fmsine4",
-//         modulationType: "square"
-//     }
-// }).toDestination()
 
 
 
@@ -72,10 +71,13 @@ const visualSequence = new Tone.Sequence((time) => {
     Tone.Draw.schedule(highlightStep, time)
 }, steps).start(0)
 
-visualSequence.loopEnd = 16
 
-console.log(visualSequence.events)
+const kickSequence = new Tone.Sequence((time, note) => {
 
+
+
+
+})
 
 
 Tone.Transport.start()
