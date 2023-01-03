@@ -5,22 +5,25 @@ const grid = document.getElementById("grid")
 const playBtn = document.getElementById("playBtn")
 const stopBtn = document.getElementById("stopBtn")
 
-let columns = 16
-let rows = 4
+playBtn.addEventListener('click', () => {
+    if (Tone.context.state !== 'running') Tone.context.resume();
+});
 
-for(let i = 0; i< rows; i++){
-    for (let i = 0; i < columns; i++) {
-        let step = document.createElement('button')
-        step.setAttribute('id',`step${i+1}` )
-         step.classList.add("step")
-        grid.appendChild(step)
-    }
+let numSteps = 17
+let steps = []
+let index = 0
 
 
+
+for (let i = 0; i < numSteps - 1; i++) {
+    let step = document.createElement('button')
+    step.setAttribute('id', `step${i}`)
+    step.classList.add("step")
+    grid.appendChild(step)
+    steps.push(step)
 }
-
-grid.addEventListener('click', function(event) {
-    if (event.target.matches('.step')){
+grid.addEventListener('click', function (event) {
+    if (event.target.matches('.step')) {
         event.target.classList.toggle("activeStep")
     }
 })
@@ -30,30 +33,52 @@ grid.addEventListener('click', function(event) {
 
 
 
-//draw loop
+//draw loop  t
 const highlightStep = () => {
+
+    const time = Tone.Time("4n").toSeconds()*1000/2
     
-    // step.classList.add('active')
-    // setTimeout(() => {
-    //     step.classList.remove("active")
-    // }, 100)
-}
+    index = index % numSteps
+    if (index > 15) { index = 0 }
+    let currentStep = steps[index]
 
-const play = async () => {
-    Tone.Transport.stop()
-    Tone.Transport.bpm.value = 120;
-
-    let loop = new Tone.Loop((time) => {
-        Tone.Draw.schedule(highlightStep, time)
-    }, "8n").start(0)
-    Tone.Transport.start()
+    
+    currentStep.classList.add("playhead")
+    setTimeout(() => {
+        currentStep.classList.remove("playhead")
+    }, time)
+     
+    index++
 
 }
 
 
-const stop = ()=>{
-    Tone.Transport.stop()
-}
+
+
+
+Tone.Transport.stop()
+Tone.Transport.bpm.value = 220;
+
+// const synth = new Tone.Synth({
+//     oscillator: {
+//         type: "fmsine4",
+//         modulationType: "square"
+//     }
+// }).toDestination()
+
+
+
+const visualSequence = new Tone.Sequence((time) => {
+    Tone.Draw.schedule(highlightStep, time)
+}, steps).start(0)
+
+visualSequence.loopEnd = 16
+
+console.log(visualSequence.events)
+
+
+
+Tone.Transport.start()
 
 
 
@@ -70,7 +95,10 @@ const stop = ()=>{
 
 
 
-playBtn.addEventListener("click", play)
+
+
+
+
 
 
 
