@@ -1,0 +1,33 @@
+#body{
+    background-color: aquamarine;
+}
+ #grid{
+    margin: 100px;
+    background-color: black;
+ }
+
+ button{
+    background-color: blue;
+    width: 35px;
+    height: 35px;
+    margin: 5px;
+ }
+
+
+ .stepElement {
+    width: 20%;
+    height: 100%;
+    position: relative;
+    float: left;
+    background-color: black;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+.step.active {
+    opacity: 1;
+    transition-duration: 0.1s;
+}
+
+.step.activeStep{
+    background-color: azure;
+}
