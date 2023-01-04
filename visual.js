@@ -17,8 +17,7 @@ let steps = []
 let index = 0
 
 
-let bools = []
-console.log(bools)
+
 
 
 
@@ -27,7 +26,10 @@ for (let i = 0; i < numSteps; i++) {
     step.setAttribute('id', `step${i}`)
     step.classList.add("step")
     grid.appendChild(step)
-    steps.push(step)
+    steps.push({
+        domElement: step,
+        noteOn: false,
+    })
 }
 grid.addEventListener('click', function (event) {
     if (event.target.matches('.step')) {
@@ -36,20 +38,22 @@ grid.addEventListener('click', function (event) {
 })
 
 
-
-
-
-
 //draw loop  t
 const highlightStep = () => {
     const time = Tone.Time("4n").toSeconds() * 1000 / 2
 
     index = index % numSteps
     if (index > 15) { index = 0 }
-    let currentStep = steps[index]
+    let currentStep = steps[index].domElement
+
+
+
+
     if (currentStep.matches('.activeStep')) {
-        console.log("hey")
+        steps[index].noteOn = true
+        console.log('hey')
     }
+    console.log(steps)
     currentStep.classList.add("playhead")
     setTimeout(() => {
         currentStep.classList.remove("playhead")
@@ -62,9 +66,6 @@ const highlightStep = () => {
 
 
 
-Tone.Transport.stop()
-
-
 
 
 const visualSequence = new Tone.Sequence((time) => {
@@ -73,10 +74,6 @@ const visualSequence = new Tone.Sequence((time) => {
 
 
 const kickSequence = new Tone.Sequence((time, note) => {
-
-
-
-
 })
 
 
