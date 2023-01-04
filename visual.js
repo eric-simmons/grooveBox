@@ -10,6 +10,7 @@ playBtn.addEventListener('click', () => {
 });
 
 
+const kick = new Tone.MembraneSynth().toDestination()
 
 Tone.Transport.bpm.value = 220;
 let numSteps = 16
@@ -45,15 +46,12 @@ const highlightStep = () => {
     index = index % numSteps
     if (index > 15) { index = 0 }
     let currentStep = steps[index].domElement
-
-
-
-
     if (currentStep.matches('.activeStep')) {
+        kick.triggerAttackRelease("C2","8n")
         steps[index].noteOn = true
         console.log('hey')
     }
-    console.log(steps)
+ 
     currentStep.classList.add("playhead")
     setTimeout(() => {
         currentStep.classList.remove("playhead")
@@ -64,17 +62,18 @@ const highlightStep = () => {
 
 
 
-
-
-
-
 const visualSequence = new Tone.Sequence((time) => {
     Tone.Draw.schedule(highlightStep, time)
 }, steps).start(0)
 
 
 const kickSequence = new Tone.Sequence((time, note) => {
-})
+
+    
+
+
+    console.log(index)
+},).start(0)
 
 
 Tone.Transport.start()
