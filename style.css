@@ -39,12 +39,19 @@ button {
   }
 
 .sequencer {
+    fill:black;
     margin: 50px 10px 0;
     -webkit-appearance: slider-vertical; /* WebKit */
     width: 8px;
     height: 200px;
     padding: 0 5px;
   }
+  .sequencer.active::-webkit-slider-runnable-track{
+   background: rgb(255, 0, 0);
+  }
+  .sequencer.lastStep::-webkit-slider-runnable-track{
+    background: black
+   }
 
   .sequencerValueDiv {
     display:flex;
@@ -85,3 +92,4 @@ button {
 .stepBtn.playHead {
     background-color: red;
 }
+

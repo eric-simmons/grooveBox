@@ -67,19 +67,34 @@ loopEndValue.innerHTML = `LoopEnd ${loopEndSlider.value}`
         }
         else (button.classList.remove("lastStep"))
     })
+
+    sequencerSliders.forEach((slider, index) => {
+        if (index >= loopEndSlider.value) {
+            slider.classList.add("lastStep")
+        }
+        else (slider.classList.remove("lastStep"))
+    })
+
+
 })
 
 
 
-//highlight button for current step
+//highlight button/slider for current step
 const visualSequence = new Tone.Sequence((time) => {
     Tone.Draw.schedule(() => {
         let currentStep = Math.floor(visualSequence.progress * visualSequence.loopEnd)
         const time = Tone.Time("4n").toSeconds() * 1000 / 2
         let currentBtn = stepBtns[currentStep]
+        let currentSlider = sequencerSliders[currentStep]
+        currentSlider.classList.add("active")
         currentBtn.classList.add("playHead")
+        
         setTimeout(() => {
             currentBtn.classList.remove("playHead")
+        }, time)
+        setTimeout(() => {
+            currentSlider.classList.remove("active")
         }, time)
     }, time)
 }, notes).start(0)
