@@ -46,15 +46,12 @@ const drawPlayhead = () => {
     const time = Tone.Time("4n").toSeconds() * 1000 / 2
     let activeStep = steps[currentStep].domElement
     let lastStep = steps[visualSequence.loopEnd - 1].domElement
-   
-
-
-
-
-    if (lastStep.matches(`#step${visualSequence.loopEnd-1}`)) {
-        lastStep.classList.add("lastStep")
+    lastStep.classList.add("lastStep")
+    activeStep.classList.remove("lastStep")
+    if (lastStep.matches(`#step${visualSequence.loopEnd - 1}`)) {
+        
     }
-    else{activeStep.classList.remove("lastStep")}
+    else { activeStep.classList.remove("lastStep") }
 
 
 
@@ -65,7 +62,7 @@ const drawPlayhead = () => {
         steps[currentStep].noteOn = true
     }
 
-    
+
     activeStep.classList.add("playHead")
     setTimeout(() => {
         activeStep.classList.remove("playHead")
@@ -123,9 +120,11 @@ const slideBpm = (event) => {
 bpmSlider.addEventListener('input', slideBpm)
 
 loopEndSlider.addEventListener('input', function (event) {
+    Tone.Transport.stop()
     visualSequence.set({
         loopEnd: +loopEndSlider.value
     })
+    Tone.Transport.start()
 })
 
 
