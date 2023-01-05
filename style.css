@@ -1,20 +1,36 @@
-#body{
+#body {
     background-color: aquamarine;
 }
- #grid{
+
+#grid {
     margin: 100px;
     background-color: black;
- }
+}
+#slidersDiv {
+    margin: 100px;
+    background-color: black;
+}
 
- button{
+button {
     background-color: blue;
     width: 35px;
     height: 35px;
     margin: 5px;
- }
+}
 
+.sliders {
+    position: absolute;
+    transform: rotate(270deg);
+    
+}
+.label{
+    display: inline-block;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: rgb(46, 53, 59);
 
- .stepElement {
+}
+
+.stepElement {
     width: 20%;
     height: 100%;
     position: relative;
@@ -23,15 +39,19 @@
     opacity: 0;
     transition: opacity 0.5s;
 }
+
 .step.active {
     opacity: 0;
     transition-duration: 0.1s;
 }
 
-.step.activeStep{
+.step.activeStep {
     background-color: azure;
 }
 
-.step.playhead{
+.step.lastStep{
+    background-color: black;
+}
+.step.playHead {
     background-color: red;
 }
