@@ -19,7 +19,7 @@ let numSteps = 16
 let steps = []
 let kickSteps = []
 let notes = []
-let noteLength = ["2n", "8n", "16n"]
+let noteLength = ["8n"]
 let step = {}
 
 //scales
@@ -133,7 +133,7 @@ const kick = new Tone.MembraneSynth({
         attack: 0.001,
         decay: 0.4,
         sustain: 0.01,
-        release: 1.4
+        release: 0.4
     }
 }
 ).toDestination()
