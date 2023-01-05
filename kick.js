@@ -76,10 +76,12 @@ const drawPlayhead = () => {
 }
 
 const visualSequence = new Tone.Sequence((time) => {
+    
     Tone.Draw.schedule(drawPlayhead, time)
 }, notes).start(0)
-
 visualSequence.loopEnd = 16
+
+
 
 
 
@@ -96,15 +98,13 @@ const kick = new Tone.MembraneSynth({
 ).toDestination()
 
 const kickSequence = new Tone.Sequence((time) => {
-    kickSequence.loopEnd = 16
+   
     let currentStep = Math.floor(kickSequence.progress * kickSequence.loopEnd)
-console.log(stepBtns[currentStep])
     if (stepBtns[currentStep].matches('.activeStep')) {
-        console.log("THIS STEP")
         kick.triggerAttackRelease(notes[currentStep], noteLength[currentStep], time)
     }
 }, notes).start(0)
-
+kickSequence.loopEnd = 16
 
 playBtn.addEventListener('click', () => {
     Tone.Transport.start()
