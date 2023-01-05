@@ -11,19 +11,16 @@
 
 <body id="body">
     <div id="slidersDiv">
-        <input type="range" class="sliders" id="pitch" min="0" max="100" value="50">
-        <label class="label">PITCH</label>
-
-
-        <input type="range" class="sliders" id="bpm" min="20" max="500" value="20">
-        <label class="label">BPM</label>
-
-        <input type="range" class="sliders" id="loopEnd" min="1" max="16" value="16">
-        <label class="label">loopEnd</label>
+        <input type="range" class="globalSliders" id="bpm" min="20" max="500" value="20">
+        <input type="range" class="globalSliders" id="loopEnd" min="1" max="16" value="16">
     </div>
 
-    <div id="sequencerDiv">
+    <div class="globalSlidersValueDiv">
+        <p class="globalSliderValue" id="bpmValue">BPM</p>
+        <p class="globalSliderValue" id="loopEndValue">loopEnd</p>
+        </div>
 
+    <div id="sequencerDiv">
         <input class="sequencer" value="39" type="range" min=12 max=80 orient="vertical" />
         <input class="sequencer" value="38" type="range" min=12 max=80 orient="vertical" />
         <input class="sequencer" value="36" type="range" min=12 max=80 orient="vertical" />

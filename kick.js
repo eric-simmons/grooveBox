@@ -6,6 +6,8 @@ const playBtn = document.getElementById("playBtn")
 const stopBtn = document.getElementById("stopBtn")
 const bpmSlider = document.getElementById("bpm")
 const loopEndSlider = document.getElementById("loopEnd")
+const bpmValue = document.getElementById('bpmValue')
+const loopEndValue = document.getElementById('loopEndValue')
 const sequencerSliders = document.querySelectorAll('.sequencer')
 const sequencerValues = document.querySelectorAll('.sequencerValue')
 const stepBtns = document.querySelectorAll('.stepBtn')
@@ -31,6 +33,8 @@ const getNotes = () => {
 }
 getNotes()
 
+
+
 //get pitch from slider and assign to notes pitch and display value on dom
 sequencerSliders.forEach((slider, index) => {
     sequencerValues[index].textContent = Tone.Frequency(slider.value, 'midi').toNote()
@@ -48,6 +52,7 @@ stepBtns.forEach((button, index) => {
 })
 
 //determine last beat in loop and dim all buttons after last beat
+//set loop end for sequences
 loopEndSlider.addEventListener('input', (event) => {
     visualSequence.set({
         loopEnd: +loopEndSlider.value
@@ -55,7 +60,7 @@ loopEndSlider.addEventListener('input', (event) => {
     kickSequence.set({
         loopEnd: +loopEndSlider.value
     })
-
+loopEndValue.innerHTML = `LoopEnd ${loopEndSlider.value}`
     stepBtns.forEach((button, index) => {
         if (index >= loopEndSlider.value) {
             button.classList.add("lastStep")
@@ -64,22 +69,21 @@ loopEndSlider.addEventListener('input', (event) => {
     })
 })
 
-//highlight button for current step
-const drawPlayhead = () => {
-    let currentStep = Math.floor(visualSequence.progress * visualSequence.loopEnd)
-    const time = Tone.Time("4n").toSeconds() * 1000 / 2
-    let currentBtn = stepBtns[currentStep]
-    currentBtn.classList.add("playHead")
-    setTimeout(() => {
-        currentBtn.classList.remove("playHead")
-    }, time)
-}
 
+
+//highlight button for current step
 const visualSequence = new Tone.Sequence((time) => {
-    
-    Tone.Draw.schedule(drawPlayhead, time)
+    Tone.Draw.schedule(() => {
+        let currentStep = Math.floor(visualSequence.progress * visualSequence.loopEnd)
+        const time = Tone.Time("4n").toSeconds() * 1000 / 2
+        let currentBtn = stepBtns[currentStep]
+        currentBtn.classList.add("playHead")
+        setTimeout(() => {
+            currentBtn.classList.remove("playHead")
+        }, time)
+    }, time)
 }, notes).start(0)
-visualSequence.loopEnd = 16
+
 
 
 
@@ -98,13 +102,19 @@ const kick = new Tone.MembraneSynth({
 ).toDestination()
 
 const kickSequence = new Tone.Sequence((time) => {
-   
+
     let currentStep = Math.floor(kickSequence.progress * kickSequence.loopEnd)
     if (stepBtns[currentStep].matches('.activeStep')) {
         kick.triggerAttackRelease(notes[currentStep], noteLength[currentStep], time)
     }
 }, notes).start(0)
+
+
+//starting values
 kickSequence.loopEnd = 16
+visualSequence.loopEnd = 16
+
+
 
 playBtn.addEventListener('click', () => {
     Tone.Transport.start()
@@ -112,15 +122,10 @@ playBtn.addEventListener('click', () => {
 });
 
 bpmSlider.addEventListener('input', (event) => {
+    bpmValue.innerText = `BPM ${event.target.value}`
     Tone.Transport.bpm.rampTo(+event.target.value, 0.1)
 })
 
-// loopEndSlider.addEventListener('input', (event) => {
-//     setLastBtn()
-//     visualSequence.set({
-//         loopEnd: +loopEndSlider.value
-//     })
-// })
 
 
 

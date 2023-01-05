@@ -6,10 +6,10 @@
     margin: 100px;
     background-color: black;
 }
-#slidersDiv {
+/* #slidersDiv {
     margin: 100px;
     background-color: black;
-}
+} */
 
 button {
     background-color: blue;
@@ -23,6 +23,20 @@ button {
     transform: rotate(270deg);
     
 }
+
+
+.globalSliders {
+    margin: 50px 10px 0;
+    -webkit-appearance: slider-vertical; /* WebKit */
+    width: 8px;
+    height: 200px;
+    padding: 0 5px;
+  }
+  .globalSlidersValueDiv {
+    display:flex;
+    margin-left: 12px;
+    column-gap: 21px;
+  }
 
 .sequencer {
     margin: 50px 10px 0;
