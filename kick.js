@@ -6,6 +6,8 @@ const playBtn = document.getElementById("playBtn")
 const stopBtn = document.getElementById("stopBtn")
 const bpmSlider = document.getElementById("bpm")
 const loopEndSlider = document.getElementById("loopEnd")
+const sequencerSliders = document.querySelectorAll('.sequencer')
+const sequencerValues = document.querySelectorAll('.sequencerValue')
 
 
 Tone.Transport.bpm.value = 220;
@@ -13,11 +15,34 @@ Tone.Transport.loopEnd = 16
 let numSteps = 16
 let steps = []
 let kickSteps = []
+let notes = []
+let noteLength = ["2n", "8n", "16n"]
+let step = {
+
+}
+
+const getNotes = () => {
+    notes = []
+    sequencerSliders.forEach(slider => {
+        let note = Tone.Frequency(slider.value, 'midi').toNote()
+        notes.push(note)
+    })
+}
+getNotes()
+console.log(notes)
+
+sequencerSliders.forEach((slider, index) => {
+    sequencerValues[index].textContent = Tone.Frequency(slider.value, 'midi').toNote()
+    slider.addEventListener('input', () => {
+        sequencerValues[index].textContent = Tone.Frequency(slider.value, 'midi').toNote()
+        getNotes()
+    })
+    
+    
+})
 
 
-
-
-const setStepBtn = () => {
+const createStepButton = () => {
     for (let i = 0; i < numSteps; i++) {
         let step = document.createElement('button')
         step.setAttribute('id', `step${i}`)
@@ -25,49 +50,46 @@ const setStepBtn = () => {
         grid.appendChild(step)
         steps.push({
             domElement: step,
-            noteOn: false,
+            noteOn: false
         })
     }
+}
 
-
+const setActiveStep = () => {
     grid.addEventListener('click', function (event) {
         if (event.target.matches('.step')) {
             event.target.classList.toggle("activeStep")
         }
     })
 }
-setStepBtn()
+
+createStepButton()
+setActiveStep()
+
+
+
 
 
 
 const drawPlayhead = () => {
     let currentStep = Math.floor(visualSequence.progress * visualSequence.loopEnd)
-
     const time = Tone.Time("4n").toSeconds() * 1000 / 2
     let activeStep = steps[currentStep].domElement
     let lastStep = steps[visualSequence.loopEnd - 1].domElement
     lastStep.classList.add("lastStep")
     activeStep.classList.remove("lastStep")
-    if (lastStep.matches(`#step${visualSequence.loopEnd - 1}`)) {
-        
-    }
-    else { activeStep.classList.remove("lastStep") }
-
-
-
-
-
+    //set note on to true if button selected
     if (activeStep.matches('.activeStep')) {
-        kick.triggerAttackRelease("C2", "8n")
         steps[currentStep].noteOn = true
     }
-
-
     activeStep.classList.add("playHead")
     setTimeout(() => {
         activeStep.classList.remove("playHead")
     }, time)
 }
+
+
+
 
 const visualSequence = new Tone.Sequence((time) => {
     Tone.Draw.schedule(drawPlayhead, time)
@@ -76,6 +98,8 @@ const visualSequence = new Tone.Sequence((time) => {
 visualSequence.set({
     loopEnd: 16
 })
+
+
 
 
 
@@ -92,14 +116,20 @@ const kick = new Tone.MembraneSynth({
 }
 ).toDestination()
 
+const kickSequence = new Tone.Sequence((time) => {
+    kickSequence.loopEnd = 16
+    let currentStep = Math.floor(kickSequence.progress * kickSequence.loopEnd)
+
+    if (steps[currentStep].noteOn) {
+        kick.triggerAttackRelease(notes[currentStep], noteLength[currentStep], time)
+    }
+}, notes).start(0)
+
 //update kick setttings
 kick.set({
     probability: 1,
 })
 
-const kickSequence = new Tone.Sequence((time, note) => {
-    console.log("hey")
-}).start(0)
 
 
 Tone.Transport.start()
@@ -107,6 +137,15 @@ Tone.Transport.start()
 playBtn.addEventListener('click', () => {
     if (Tone.context.state !== 'running') Tone.context.resume();
 });
+
+
+
+
+
+
+
+
+
 
 
 
