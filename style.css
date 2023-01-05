@@ -56,18 +56,18 @@ button {
     transition: opacity 0.5s;
 }
 
-.step.active {
+.stepBtn.active {
     opacity: 0;
     transition-duration: 0.1s;
 }
 
-.step.activeStep {
+.stepBtn.activeStep {
     background-color: azure;
 }
 
-.step.lastStep{
+.stepBtn.lastStep{
     background-color: black;
 }
-.step.playHead {
+.stepBtn.playHead {
     background-color: red;
 }
