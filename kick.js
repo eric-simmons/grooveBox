@@ -23,24 +23,55 @@ let noteLength = ["8n"]
 let step = {}
 
 //scales
+const createScale = (key) => {
+    let scale = []
+    let i = 0
+    while (i < 53) {
+        key = key * 2 ** (1 / 12)
+        // key = Tone.Frequency.ftom(key)
+        scale.push(key)
+        i++
+    } 
+    return scale
+}
+
+
+// console.log(createScale(440))
 let CMajor = []
-const Major = [0, 2, 4, 5, 7, 9, 11, 12];
+const Major = [0, 2, 4, 5, 7, 9, 11];
+[12, 14, 16, 17, 19, 21, 23]
 let startingNote = 60
 for (let i = 0; i < Major.length; i++) {
-    CMajor.push(Major[i] + startingNote);
+    // CMajor.push(Tone.Frequency(Major[i] + startingNote, 'midi').toNote())
+    CMajor.push(Major[i] + startingNote)
 }
+// console.log(CMajor)
+
+
+
+
+const quantizeArray = (array, scale) => {
+    array.forEach(note => {
+        //check each note if it exists in scale array
+
+        //if not add value until it matches
+
+    })
+
+
+
+    return quantizedArray
+}
+
+
+
+
 
 // setPitch = () => {
 //     return (CMajor[Math.floor(Math.random() * CMajor.length)])
 // }
 
-// setStep = (bar, sixteenth) => {
-//     return {
-//         time: setTime(bar, sixteenth),
-//         note: setPitch(bar),
-//         velocity: setVelocity()
-//     }
-// }
+
 
 //get the notes from slider and translate to midi note then push to notes array
 const getNotes = () => {
@@ -51,7 +82,7 @@ const getNotes = () => {
     })
 }
 getNotes()
-
+// console.log(notes)
 
 
 //get pitch from slider and assign to notes pitch and display value on dom
