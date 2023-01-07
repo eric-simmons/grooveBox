@@ -23,17 +23,6 @@ let noteLength = ["8n"]
 let step = {}
 
 //scales
-const createScale = (key) => {
-    let scale = []
-    let i = 0
-    while (i < 53) {
-        key = key * 2 ** (1 / 12)
-        // key = Tone.Frequency.ftom(key)
-        scale.push(key)
-        i++
-    } 
-    return scale
-}
 
 
 // console.log(createScale(440))
@@ -42,7 +31,6 @@ const Major = [0, 2, 4, 5, 7, 9, 11];
 [12, 14, 16, 17, 19, 21, 23]
 let startingNote = 60
 for (let i = 0; i < Major.length; i++) {
-    // CMajor.push(Tone.Frequency(Major[i] + startingNote, 'midi').toNote())
     CMajor.push(Major[i] + startingNote)
 }
 // console.log(CMajor)
@@ -57,9 +45,6 @@ const quantizeArray = (array, scale) => {
         //if not add value until it matches
 
     })
-
-
-
     return quantizedArray
 }
 
@@ -74,14 +59,16 @@ const quantizeArray = (array, scale) => {
 
 
 //get the notes from slider and translate to midi note then push to notes array
-const getNotes = () => {
-    notes = []
-    sequencerSliders.forEach(slider => {
-        let note = Tone.Frequency(slider.value, 'midi').toNote()
-        notes.push(note)
-    })
-}
-getNotes()
+// const getNotes = () => {
+//     notes = []
+//     sequencerSliders.forEach(slider => {
+//         let note = Tone.Frequency(slider.value, 'midi').toNote()
+//         notes.push(note)
+//     })
+// }
+// getNotes()
+
+
 // console.log(notes)
 
 
@@ -97,10 +84,8 @@ sequencerSliders.forEach((slider, index) => {
 //toggle active step buttons
 stepBtns.forEach((button, index) => {
     button.addEventListener('click', (event) => {
-
         sequencerSliders[index].classList.toggle("activeSlider")
         event.target.classList.toggle("activeStep")
-
     })
 })
 
@@ -127,8 +112,6 @@ loopEndSlider.addEventListener('input', (event) => {
         }
         else (slider.classList.remove("lastStep"))
     })
-
-
 })
 
 
@@ -192,8 +175,6 @@ bpmSlider.addEventListener('input', (event) => {
     bpmValue.innerText = `BPM ${event.target.value}`
     Tone.Transport.bpm.rampTo(+event.target.value, 0.1)
 })
-
-
 
 
 
